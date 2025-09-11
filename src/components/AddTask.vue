@@ -18,7 +18,7 @@ defineProps({
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Thêm mới todo</h5>
           <button 
             type="button" 
             class="btn-close" 
@@ -29,12 +29,12 @@ defineProps({
         <div class="modal-body">
           <form>
             <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">Recipient:</label>
-              <input type="text" class="form-control" id="recipient-name">
+            <label class="form-label">Tên todo</label>
+            <input type="text" name="name_todo" class="form-control" id="name_todo">
             </div>
             <div class="mb-3">
-              <label for="message-text" class="col-form-label">Message:</label>
-              <textarea class="form-control" id="message-text"></textarea>
+            <label class="form-label">Mô tả</label>
+            <textarea class="form-control" id="description_todo" name="description_todo"></textarea>
             </div>
           </form>
         </div>
@@ -43,19 +43,11 @@ defineProps({
             type="button" 
             class="btn btn-secondary" 
             data-bs-dismiss="modal"
-          >
-            Close
+          > Hủy
           </button>
-          <button type="button" class="btn btn-primary">Send message</button>
+          <button type="submit" class="btn btn-primary">Thêm mới</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>
