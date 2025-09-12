@@ -1,7 +1,7 @@
 <script setup>
 import Home from './components/Home.vue'
 import SideBar from './components/SideBar.vue'
-import Content from './components/Content.vue'
+import Content from './components/ListTodo.vue'
 
 </script>
 
