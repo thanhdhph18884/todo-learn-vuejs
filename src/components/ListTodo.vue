@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue';
 import EditTodo from './EditTodo.vue';
+import AddTask from './AddTask.vue';
 const listTodo = ref(JSON.parse(localStorage.getItem('todos') || '[]'))
+
 
 const deleteTodo = (id) => {
   const confirmDelete = confirm('Bạn có chắc chắn muốn xóa ko?')
@@ -18,8 +20,8 @@ const editTodo = (id) => {
 
 <template>
  <main class="content">
-  <table class="table">
-  <thead>
+  <table class="table table-bordered">
+  <thead class="table-secondary">
     <tr>
       <th scope="col">STT</th>
       <th scope="col">Tên</th>

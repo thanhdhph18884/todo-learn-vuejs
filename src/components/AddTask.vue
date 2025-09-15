@@ -1,36 +1,49 @@
 <script setup>
 import { ref } from 'vue';
+import * as bootstrap from 'bootstrap'
 
+const emitNotify = defineEmits(['todo_added'])
 
-defineProps({
-  msg: String,
-})
+const STATUS = {
+  PENDING: "pending",
+  DONE: "done",
+  IN_PROGRESS: "in-progress",
+  CANCELED: "canceled",
+}
 const nameTodo = ref('')
 const descriptionTodo = ref('')
-const handleSubmit = () => {
-  const todos = JSON.parse(localStorage.getItem('todos') || '[]');
-  console.log('Danh sách todos hiện tại:', todos);
-  const newTodo = {
+const nameError = ref('')
+const descriptionError = ref('')
+function addTodo() {
+  nameError.value = ''
+  descriptionError.value = ''
+  if (!nameTodo.value.trim()) {
+    nameError.value = 'Tên todo không được để trống'
+  }
+  if (!descriptionTodo.value.trim()) {
+    descriptionError.value = 'Mô tả không được để trống'
+  }
+  if (nameError.value || descriptionError.value) return
+
+  const todos = JSON.parse(localStorage.getItem('todos') || '[]')
+  todos.push({
     id: Date.now(),
     name: nameTodo.value,
     description: descriptionTodo.value,
-    status: 1, // 1: chưa làm, 2: đã làm;3 đang làm; 4: đã hủy
-  };
-  todos.push(newTodo);
-  localStorage.setItem('todos', JSON.stringify(todos));
-  nameTodo.value = '';
-  descriptionTodo.value = '';
-  console.log('Đã lưu todo:', newTodo)
+    status: STATUS.PENDING,
+  })
+  localStorage.setItem('todos', JSON.stringify(todos))
+
+  nameTodo.value = ''
+  descriptionTodo.value = ''
+
+  window.location.reload()
 }
 </script>
 
 <template>
   <div 
-    class="modal fade" 
-    id="exampleModal" 
-    tabindex="-1" 
-    aria-labelledby="exampleModalLabel" 
-    aria-hidden="true">
+    class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -43,14 +56,16 @@ const handleSubmit = () => {
           ></button>
         </div>
         <div class="modal-body">
-          <form @submit.prevent="handleSubmit">
+          <form @submit.prevent="addTodo">
             <div class="mb-3">
             <label class="form-label">Tên todo</label>
             <input type="text" v-model="nameTodo" class="form-control" id="name_todo">
+            <div class="text-danger" v-if="nameError">{{ nameError }}</div>
             </div>
             <div class="mb-3">
             <label class="form-label">Mô tả</label>
             <textarea class="form-control" id="description_todo" v-model="descriptionTodo"></textarea>
+            <div class="text-danger" v-if="descriptionError">{{ descriptionError }}</div>
             </div>
             <div class="modal-footer">
           <button 
