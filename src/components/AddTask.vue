@@ -59,12 +59,12 @@ function addTodo() {
           <form @submit.prevent="addTodo">
             <div class="mb-3">
             <label class="form-label">Tên todo</label>
-            <input type="text" v-model="nameTodo" class="form-control" id="name_todo">
+            <input type="text" placeholder="nhập tên" v-model="nameTodo" class="form-control" id="name_todo">
             <div class="text-danger" v-if="nameError">{{ nameError }}</div>
             </div>
             <div class="mb-3">
             <label class="form-label">Mô tả</label>
-            <textarea class="form-control" id="description_todo" v-model="descriptionTodo"></textarea>
+            <textarea class="form-control" placeholder="nhập mô tả" id="description_todo" v-model="descriptionTodo"></textarea>
             <div class="text-danger" v-if="descriptionError">{{ descriptionError }}</div>
             </div>
             <div class="modal-footer">

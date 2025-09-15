@@ -1,20 +1,28 @@
 <script setup>
 import { ref } from 'vue';
 import EditTodo from './EditTodo.vue';
-import AddTask from './AddTask.vue';
 const listTodo = ref(JSON.parse(localStorage.getItem('todos') || '[]'))
+const currentTodo  = ref(null);
 
-
-const deleteTodo = (id) => {
+function deleteTodo(id) {
   const confirmDelete = confirm('Bạn có chắc chắn muốn xóa ko?')
   if (!confirmDelete) return
   listTodo.value = listTodo.value.filter(todo => todo.id !== id)
   localStorage.setItem('todos', JSON.stringify(listTodo.value))
 }
 
-const editTodo = (id) => {
-  const modal = new bootstrap.Modal(document.getElementById('editModalTodo'))
+function editTodo(todo) {
+  console.log('vào đây')
+  currentTodo.value = { ...todo }
+  let modal = new bootstrap.Modal(document.getElementById('editModalTodo'))
   modal.show()
+}
+function updateTodo(updatedTodo) {
+  let index = listTodo.value.findIndex(t => t.id == updatedTodo.id)
+  if(index !== -1){
+    listTodo.value[index] = updatedTodo
+    localStorage.setItem('todos', JSON.stringify(listTodo.value))
+  }
 }
 </script>
 
@@ -37,7 +45,7 @@ const editTodo = (id) => {
       <td>{{ todo.description }}</td>
       <td>{{ todo.status }}</td>   
       <td>
-          <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModalTodo"@click="editTodo(todo.id)">
+          <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModalTodo" @click="editTodo(todo)">
               <i class="las la-edit la-2x"></i>
             </button>
           <button class="btn btn-sm btn-danger" @click="deleteTodo(todo.id)">
@@ -48,7 +56,7 @@ const editTodo = (id) => {
   </tbody>
 </table> 
 </main>
-<EditTodo></EditTodo>
+<EditTodo :todo="currentTodo" @update="updateTodo"></EditTodo>
 </template>
 
 <style scoped>
