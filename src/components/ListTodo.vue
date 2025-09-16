@@ -54,6 +54,7 @@ function statusClass(status) {
       <th scope="col">Tên</th>
       <th scope="col">Mô tả</th>
       <th scope="col">Trạng thái</th>
+      <th scope="col">Lịch</th>
       <th scope="col">Hành động</th>
     </tr>
   </thead>
@@ -65,6 +66,7 @@ function statusClass(status) {
       <td :class="statusClass(todo.status)">
       {{ todo.status }}
       </td>
+      <td>{{ todo.dateData }}</td>
 
       <td>
           <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModalTodo" @click="editTodo(todo)">

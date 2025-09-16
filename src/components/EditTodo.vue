@@ -9,29 +9,37 @@ const nameError = ref('')
 const descriptionError = ref('')
 const descriptionEdit = ref('')
 const statusEdit = ref('')
-
+const dateTodo = ref('')
+const dateTodoError = ref('')
 watch(() => props.todo, (newVal) => {
   if (newVal) {
     nameEdit.value = newVal.name
     descriptionEdit.value = newVal.description
     statusEdit.value = newVal.status
+    dateTodo.value = newVal.dateData || '' 
   }
 }, { immediate: true })
 function updateTodo() {
   nameError.value = ''
   descriptionError.value = ''
+  dateTodoError.value = ''
   if (!nameEdit.value.trim()) {
     nameError.value = 'Tên todo không được để trống'
   }
   if (!descriptionEdit.value.trim()) {
     descriptionError.value = 'Mô tả không được để trống'
   }
-  if (nameError.value || descriptionError.value) return
+  if (!dateTodo.value.trim()) {
+    dateTodoError.value = 'Lịch không được để trống'
+  }
+  if (nameError.value || descriptionError.value || dateTodoError.value) return
+  const dateData = dateTodo.value ? dateTodo.value : today.value.toISOString().split('T')[0]
  emit('update', {
   id: props.todo?.id,
   name: nameEdit.value,
   description: descriptionEdit.value,
-  status: statusEdit.value
+  status: statusEdit.value,
+  dateData : dateData
   })
   window.location.reload()
 }
@@ -56,6 +64,11 @@ function updateTodo() {
               <label class="form-label">Mô tả</label>
               <textarea v-model="descriptionEdit" placeholder="Nhập mô tả" class="form-control"></textarea>
               <div class="text-danger" v-if="descriptionError">{{ descriptionError }}</div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Lịch</label>
+              <input type="date" v-model="dateTodo" placeholder="Nhập mô tả" class="form-control"></input>
+              <div class="text-danger" v-if="dateTodoError">{{ dateTodoError }}</div>
             </div>
             <div class="mb-3">
               <label class="form-label">Trạng thái</label>
