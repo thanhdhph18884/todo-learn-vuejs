@@ -39,6 +39,8 @@ function addTodo() {
 
   window.location.reload()
 }
+
+
 </script>
 
 <template>

@@ -1,9 +1,15 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed} from 'vue';
 import EditTodo from './EditTodo.vue';
 const listTodo = ref(JSON.parse(localStorage.getItem('todos') || '[]'))
 const currentTodo  = ref(null);
-
+const props = defineProps({
+  filterStatus: { type: String }
+})
+const filteredTodos = computed(() => {
+  if (props.filterStatus === 'all') return listTodo.value
+  return listTodo.value.filter(todo => todo.status === props.filterStatus)
+})
 function deleteTodo(id) {
   const confirmDelete = confirm('Bạn có chắc chắn muốn xóa ko?')
   if (!confirmDelete) return
@@ -12,7 +18,6 @@ function deleteTodo(id) {
 }
 
 function editTodo(todo) {
-  console.log('vào đây')
   currentTodo.value = { ...todo }
   let modal = new bootstrap.Modal(document.getElementById('editModalTodo'))
   modal.show()
@@ -24,6 +29,20 @@ function updateTodo(updatedTodo) {
     localStorage.setItem('todos', JSON.stringify(listTodo.value))
   }
 }
+function statusClass(status) {
+  switch (status) {
+    case 'pending':
+      return 'status-pending'
+    case 'in-progress':
+      return 'status-inprogress'
+    case 'done':
+      return 'status-done'
+    default:
+      return ''
+  }
+}
+
+
 </script>
 
 <template>
@@ -39,11 +58,14 @@ function updateTodo(updatedTodo) {
     </tr>
   </thead>
   <tbody>
-    <tr v-for="(todo,index) in listTodo" :key="todo.id">
+    <tr v-for="(todo,index) in filteredTodos" :key="todo.id">
       <th scope="row">{{ index + 1 }}</th>
       <td>{{ todo.name }}</td>
       <td>{{ todo.description }}</td>
-      <td>{{ todo.status }}</td>   
+      <td :class="statusClass(todo.status)">
+      {{ todo.status }}
+      </td>
+
       <td>
           <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModalTodo" @click="editTodo(todo)">
               <i class="las la-edit la-2x"></i>
@@ -65,4 +87,19 @@ function updateTodo(updatedTodo) {
   padding: 20px;
   box-sizing: border-box;
 }
+.status-pending {
+  color: #d1453b;
+  font-weight: bold;
+}
+
+.status-inprogress {
+  color: #007bff; 
+  font-weight: bold;
+}
+
+.status-done {
+  color: #28a745;
+  font-weight: bold;
+}
+
 </style>
