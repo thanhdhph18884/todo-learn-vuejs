@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import EditTodo from './EditTodo.vue';
 import AddTask from './AddTask.vue';
+import DataTable from "primevue/datatable";
+import Column from "primevue/column"; 
 const listTodo = ref(JSON.parse(localStorage.getItem('todos') || '[]'))
 
 
@@ -16,38 +18,22 @@ const editTodo = (id) => {
   const modal = new bootstrap.Modal(document.getElementById('editModalTodo'))
   modal.show()
 }
+const columns = [
+    { field: 'STT', header: 'STT' },
+    { field: 'name', header: 'Name' },
+    { field: 'description', header: 'Description' },
+    { field: 'date', header: 'Date' },
+    { field: 'status', header: 'Trạng thái' },
+];
+
 </script>
 
 <template>
- <main class="content">
-  <table class="table table-bordered">
-  <thead class="table-secondary">
-    <tr>
-      <th scope="col">STT</th>
-      <th scope="col">Tên</th>
-      <th scope="col">Mô tả</th>
-      <th scope="col">Trạng thái</th>
-      <th scope="col">Hành động</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="(todo,index) in listTodo" :key="todo.id">
-      <th scope="row">{{ index + 1 }}</th>
-      <td>{{ todo.name }}</td>
-      <td>{{ todo.description }}</td>
-      <td>{{ todo.status }}</td>   
-      <td>
-          <button class="btn btn-sm btn-warning me-2" data-bs-toggle="modal" data-bs-target="#editModalTodo"@click="editTodo(todo.id)">
-              <i class="las la-edit la-2x"></i>
-            </button>
-          <button class="btn btn-sm btn-danger" @click="deleteTodo(todo.id)">
-            <i class="las la-trash-alt la-2x"></i>
-          </button>
-        </td>  
-    </tr>
-  </tbody>
-</table> 
-</main>
+ <div class="card">
+        <DataTable :value="listTodo" tableStyle="min-width: 50rem">
+            <Column v-for="col of columns" :key="col.field" :field="col.field" :header="col.header"></Column>
+        </DataTable>
+    </div>
 <EditTodo></EditTodo>
 </template>
 
