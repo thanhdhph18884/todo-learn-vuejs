@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+const filterStatus = defineModel('filterStatus', { type: String, default: 'all' })
 
 
 defineProps({
@@ -20,12 +21,12 @@ const count = ref(30)
     </div>
     <div>
       <ul class="menu">
-        <li data-bs-toggle="modal" data-bs-target="#exampleModal" class="add-task-item">  <span class="icon-circle"><i class="las la-plus"></i></span>Add task</li>
-        <li><i class="las la-list-alt"></i>List todo</li>
-        <li class="active"><i class="las la-calendar-day"></i>Today</li>
-        <li><i class="las la-times-circle"></i>Todo not done</li>
-        <li><i class="las la-check"></i>Todo done</li>
-      </ul>
+      <li data-bs-toggle="modal" data-bs-target="#exampleModal" class="add-task-item">  <span class="icon-circle"><i class="las la-plus"></i></span>Add task</li>
+      <li @click="filterStatus = 'all'"><i class="las la-list-alt"></i>All</li>
+      <li @click="filterStatus = 'pending'"><i class="las la-calendar-day"></i>Pending</li>
+      <li @click="filterStatus = 'in-progress'"><i class="las la-times-circle"></i>In-Progress</li>
+      <li @click="filterStatus = 'done'"><i class="las la-check"></i>Done</li>
+    </ul>
     </div>
   </aside>
 </template>
