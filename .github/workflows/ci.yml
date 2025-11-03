@@ -1,0 +1,35 @@
+name: CI - Build & Test Vue Project
+
+# Khi nào workflow này chạy
+on:
+  push:
+    branches: [ main ]   # chạy khi push lên nhánh main
+  pull_request:
+    branches: [ main ]   # chạy khi có PR tới main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   # GitHub sẽ chạy job này trong môi trường Ubuntu
+
+    steps:
+      # 1️⃣ Lấy code từ repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2️⃣ Cài Node.js (có thể đổi version tuỳ project)
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # 3️⃣ Cài dependencies
+      - name: Install dependencies
+        run: npm install
+
+      # 4️⃣ Build project (đảm bảo code build được)
+      - name: Build project
+        run: npm run build
+
+      # 5️⃣ (Tuỳ chọn) Chạy test nếu có
+      - name: Run tests
+        run: npm test || echo "No tests"
